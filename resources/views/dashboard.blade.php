@@ -4,7 +4,7 @@
     @include('includes.message-block')
     <section class="row new-post">
         <div class="col-md-6 col-md-offset-3">
-            <header><h3>What do you have to say?</h3></header>
+            <header><h3>What do you want to say?</h3></header>
             <form action="{{ route('post.create') }}" method="post">
                 <div class="form-group">
                     <textarea class="form-control" name="body" id="new-post" rows="5" placeholder="Your Post"></textarea>
@@ -15,41 +15,26 @@
         </div>
     </section>
     <section class="row posts">
-        <div class="col-md-6 col-md-3-offser">
+        <div class="col-md-6 col-md-3-offset-3">
             <header><h3><br />What other people say...</h3></header>
+            @foreach($posts as $post)
             <article class="post">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p>{{ $post->body }}</p>
                 <div class="info">
-                    Posted by Wojtek on 12 Feb 2020
+                    Posted by {{ $post->user->first_name }} on {{ $post->created_at }}
                 </div>
                 <div class="interaction">
                     <a href="#">Like</a> |
-                    <a href="#">Dislike</a> |
-                    <a href="#">Edit</a> |
-                    <a href="#">Delete</a> |
+                    <a href="#">Dislike</a>
+                    @if(Auth::user() == $post->user)
+                        |
+                        <a href="#">Edit</a> |
+                        <a href="{{ route('post.delete', ['post_id' => $post->id]) }}">Delete</a>
+                    @endif
                 </div>
             </article>
-            <article class="post">
-                <p><br />Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <div class="info">
-                    Posted by Wojtek on 12 Feb 2020
-                </div>
-                <div class="interaction">
-                    <a href="#">Like</a> |
-                    <a href="#">Dislike</a> |
-                    <a href="#">Edit</a> |
-                    <a href="#">Delete</a>
-                </div>
+            @endforeach
 
-            </article>
         </div>
     </section>
 @endsection
