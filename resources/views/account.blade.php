@@ -6,7 +6,7 @@
 
 @section('content')
     <section class="row new-post">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-6 col-md-offset-3" id="account">
             <header><h3>Your Account</h3></header>
             <form action="{{ route('account.save') }}" method="post" enctype="multipart/form-data">
                 <div class="form-group">
@@ -24,7 +24,7 @@
     </section>
     @if (Storage::disk('local')->has($user->first_name . '-' . $user->id . '.jpg'))
         <section class="row new-post">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-6 col-md-offset-3" id="account">
                 <img src="{{ route('account.image', ['filename' => $user->first_name . '-' . $user->id . '.jpg']) }}" alt="" class="img-responsive" style="max-width: 500px; height: auto;">
             </div>
         </section>

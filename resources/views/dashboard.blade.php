@@ -3,7 +3,7 @@
 @section('content')
     @include('includes.message-block')
     <section class="row new-post">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-6 col-md-offset-3" id="new-post">
             <header><h3>What do you want to say?</h3></header>
             <form action="{{ route('post.create') }}" method="post">
                 <div class="form-group">
@@ -15,24 +15,33 @@
         </div>
     </section>
     <section class="row posts">
-        <div class="col-md-6 col-md-3-offset-3">
+        <div class="col-md-6 col-md-3-offset-3" id="posts">
             <header><h3><br />What other people say...</h3></header>
             @foreach($posts as $post)
-            <article class="post" data-postid="{{ $post->id }}">
-                <p>{{ $post->body }}</p>
-                <div class="info">
-                    Posted by {{ $post->user->first_name }} on {{ $post->created_at }}
-                </div>
-                <div class="interaction">
-                    <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like' }}</a> |
-                    <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 0 ? 'You don\'t like this post' : 'Dislike' : 'Dislike' }}</a>
-                    @if(Auth::user() == $post->user)
-                        |
-                        <a href="#" class="edit">Edit</a> |
-                        <a href="{{ route('post.delete', ['post_id' => $post->id]) }}">Delete</a>
-                    @endif
-                </div>
-            </article>
+                <table>
+                    <tr>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1200px-User_font_awesome.svg.png" alt="" style="max-width: 100px; height: auto;"></td>
+                        <td><article class="post" data-postid="{{ $post->id }}">
+                                <p>{{ $post->body }}</p>
+                                <div class="info">
+                                    Posted by {{ $post->user->first_name }} on {{ $post->created_at }}
+                                </div>
+                                <div class="interaction">
+                                    <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like' }}</a>
+                                    (<a>{{ $count_dislike = DB::table('likes')->where('post_id', $post->id)->where('like','1')->count() }}</a>) |
+                                    <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 0 ? 'You don\'t like this post' : 'Dislike' : 'Dislike' }}</a>
+                                    (<a>{{ $count_dislike = DB::table('likes')->where('post_id', $post->id)->where('like','0')->count() }}</a>)
+                                    @if(Auth::user() == $post->user)
+                                        |
+                                        <a href="#" class="edit">Edit</a> |
+                                        <a href="{{ route('post.delete', ['post_id' => $post->id]) }}">Delete</a>
+                                    @endif
+                                </div>
+                            </article></td>
+
+                    </tr>
+                </table>
+
             @endforeach
 
         </div>

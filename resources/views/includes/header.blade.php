@@ -3,10 +3,10 @@
     <ul class="navbar-nav navbar-right">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                Dropdown link
+                Account
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('account') }}">Account</a>
+                <a class="dropdown-item" href="{{ route('account') }}">Settings</a>
                 <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
             </div>
         </li>
