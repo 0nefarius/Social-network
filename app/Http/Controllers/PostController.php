@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Like;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 
@@ -22,7 +23,6 @@ class PostController extends Controller
             'body' => 'required|max:1000'
         ]);
         $post = new Post();
-        $post->body = $request['body'];
         $message = 'There was an error';
 
         $arr = ['chuj','chuja', 'chujek', 'chuju', 'chujem', 'chujnia',
@@ -150,17 +150,42 @@ class PostController extends Controller
             'zesrywać', 'zesrywający', 'zjebać', 'zjebac', 'zjebał', 'zjebal',
             'zjebała', 'zjebala', 'zjebana', 'zjebią', 'zjebali', 'zjeby'];
 
+        $post->body = $this->censored2($request, $arr);
 
-        for($i = 0; $i<sizeof($arr); $i++){
-            if(Str::contains($request['body'], $arr[$i])){
-                $message = 'There was an error!';
-            }elseif($request->user()->posts()->save($post)){
-                $message = 'Post Successfully created!';
-            }
+//      ******************************DRUGA WERSJA CENZUROWANIA******************************
+        /*if($this->censored($request, $arr)){
+            $message = 'Censored!';
+        }elseif($request->user()->posts()->save($post)){
+            $message = 'Post Successfully created!';
+        }*/
+
+        if($request->user()->posts()->save($post)){
+            $message = 'Post Successfully created!';
         }
 
 
         return redirect()->route('dashboard')->with(['message' => $message]);
+    }
+
+    public function censored(Request $request, Array $arr)
+    {
+        $condition = 0;
+        foreach($arr as $ar){
+            if(Str::contains($request['body'], $ar)){
+                $condition = 1;
+            }
+        }
+        return $condition;
+    }
+
+    public function censored2(Request $request, Array $arr)
+    {
+        foreach($arr as $ar){
+            if(Str::contains($request['body'], $ar)){
+                $request['body'] = str_replace($ar, 'ogórek', $request['body']);
+            }
+        }
+        return $request['body'];
     }
 
     public function  getDeletePost($post_id)
