@@ -13,6 +13,7 @@
 #posts {
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 30px;
 }
 
 #account {
@@ -49,7 +50,6 @@
 .error,
 .success {
     text-align: center;
-
 }
 
 .error ul {

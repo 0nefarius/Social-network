@@ -18,7 +18,7 @@
         <div class="col-md-6 col-md-3-offset-3" id="posts">
             <header><h3><br />What other people say...</h3></header>
             @foreach($posts as $post)
-                <table>
+                <table style="margin-bottom: 30px">
                     <tr>
                         <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1200px-User_font_awesome.svg.png" alt="" style="max-width: 70px; height: auto;"></td>
                         <td><article class="post" data-postid="{{ $post->id }}">
